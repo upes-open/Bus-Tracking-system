@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project/screen/locations/components/mapPage.dart';
+import 'package:bts/screen/mapPage.dart';
 
 class LocationsPage extends StatefulWidget {
   @override
