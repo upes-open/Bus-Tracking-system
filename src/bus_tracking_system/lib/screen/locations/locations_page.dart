@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bus_tracking_system/screen/locations/components/mapPage.dart'; //bts
+import 'package:bus_tracking_system/screen/locations/components/mapPage.dart';
 
 class LocationsPage extends StatefulWidget {
   @override
