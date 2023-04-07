@@ -26,14 +26,14 @@ class _UIState extends State<UI> {
           children: [
             Text(
               isStudent ? 'STUDENT LOGIN' : 'DRIVER LOGIN',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 20),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
               ),
@@ -43,7 +43,7 @@ class _UIState extends State<UI> {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Password',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20),
