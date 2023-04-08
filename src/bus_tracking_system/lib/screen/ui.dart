@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // added Firebase Auth package
-import 'package:firebase_core/firebase_core.dart'; // import the Firebase Core package
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class UI extends StatefulWidget {
   @override
@@ -9,9 +9,9 @@ class UI extends StatefulWidget {
 }
 
 class _UIState extends State<UI> {
-  Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
-    return firebaseApp;
+  Future<void> _initializeFirebase() async {
+    await Firebase.initializeApp();
+    print('Firebase initialized');
   }
 
   @override
@@ -24,10 +24,8 @@ class _UIState extends State<UI> {
   late String email;
   late String password;
 
-  final FirebaseAuth _auth =
-      FirebaseAuth.instance; // added Firebase Auth instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> _register() async {
-    // added async function to register user in Firebase Auth//login fucntion
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -76,7 +74,6 @@ class _UIState extends State<UI> {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  //to add email;(/sap id)
                   setState(() {
                     email = value;
                   });
@@ -96,7 +93,9 @@ class _UIState extends State<UI> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                _register();
+              },
               child: Text('Log In'),
             ),
             SizedBox(height: 10),
@@ -116,7 +115,3 @@ class _UIState extends State<UI> {
     properties.add(StringProperty('password', password));
   }
 }
-
-
-// value not saved/stored
-// padding 
