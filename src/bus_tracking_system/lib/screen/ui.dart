@@ -1,3 +1,4 @@
+import 'package:bus_tracking_system/helper/helperFunction.dart';
 import 'package:bus_tracking_system/services/authServices.dart';
 import 'package:bus_tracking_system/services/databaseServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
-class UI extends StatefulWidget {
+class UI extends StatefulWidget {//is a 
   @override
   _UIState createState() => _UIState();
 }
@@ -50,7 +51,7 @@ class _UIState extends State<UI> {
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
-                  setState(() {
+                  setState(() {//set management
                     email = value;
                   });
                 }),
@@ -96,6 +97,14 @@ class _UIState extends State<UI> {
       if(value==true){
         QuerySnapshot snapshot= await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).getUserData( email) ;
     //sharedrefences
+    await HelperFunctions.savedUserLoggedInStatus(true);
+    await HelperFunctions.savedUserEmailSF(email);
+    //await HelperFunctions.getUserNamefromSF(true);
+   /* Navigator.push(context,MaterialPageRoute(builder:(context) {
+      homepage
+    }))*/
+
+
       }
     });//
     

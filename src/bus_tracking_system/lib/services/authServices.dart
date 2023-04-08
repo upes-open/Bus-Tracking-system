@@ -11,7 +11,7 @@ class AuthService {
     try {
       User user = (await firebaseAuth.signInWithEmailAndPassword(
               //firebase class=User
-              //signinwithemailandpassw
+              //signinwithemailandpass
               email: email,
               password: password))
           .user!;
