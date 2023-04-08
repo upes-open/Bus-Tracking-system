@@ -1,7 +1,11 @@
+import 'package:bus_tracking_system/services/authServices.dart';
+import 'package:bus_tracking_system/services/databaseServices.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 
 class UI extends StatefulWidget {
   @override
@@ -9,40 +13,12 @@ class UI extends StatefulWidget {
 }
 
 class _UIState extends State<UI> {
-  Future<void> _initializeFirebase() async {
-    await Firebase.initializeApp();
-    print('Firebase initialized');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeFirebase();
-  }
-
+  AuthService _auth = AuthService()
+  
+  
   bool isStudent = true;
-  late String email;
-  late String password;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> _register() async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      print('User registered successfully: ${userCredential.user!.uid}');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  late final String email;
+  late final String password;
 
   void toggleLoginOption() {
     setState(() {
@@ -94,7 +70,7 @@ class _UIState extends State<UI> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                _register();
+               login();
               },
               child: Text('Log In'),
             ),
@@ -113,5 +89,16 @@ class _UIState extends State<UI> {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(StringProperty('password', password));
+  }
+
+  login() async{
+    await _auth.loginWithUserEmailandPassword(email, password).then((value) async{//auth services instance
+      if(value==true){
+        QuerySnapshot snapshot= await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid).getUserData( email) ;
+    //sharedrefences
+      }
+    });//
+    
+
   }
 }
