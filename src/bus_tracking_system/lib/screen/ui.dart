@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bus_tracking_system/screen/locations/locations_page.dart';
 
 class UI extends StatefulWidget {
   @override
@@ -48,7 +49,11 @@ class _UIState extends State<UI> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                  return LocationsPage();
+                },),);
+              },
               child: Text('Log In'),
             ),
             SizedBox(height: 10),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bts/screen/ui.dart';
+import 'package:bus_tracking_system/screen/ui.dart';
 
 void main() {
   runApp(MyApp());
