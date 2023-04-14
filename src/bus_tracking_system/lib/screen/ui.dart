@@ -4,8 +4,12 @@ import 'package:bus_tracking_system/services/databaseServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+import 'package:bus_tracking_system/screen/locations/locations_page.dart';
+=======
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+>>>>>>> 1539f06958eafa40aa369b40ee2ddb279aabf01b
 
 
 class UI extends StatefulWidget {//is a 
@@ -71,7 +75,13 @@ class _UIState extends State<UI> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+<<<<<<< HEAD
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                  return LocationsPage();
+                },),);
+=======
                login();
+>>>>>>> 1539f06958eafa40aa369b40ee2ddb279aabf01b
               },
               child: Text('Log In'),
             ),
