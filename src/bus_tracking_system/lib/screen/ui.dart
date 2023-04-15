@@ -35,7 +35,8 @@ class _UIState extends State<UI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BUS TRACKER'),
+        centerTitle: true,
+        title: Text('BUS TRACKER',),
       ),
       body: Center(
         child: Column(
@@ -43,52 +44,49 @@ class _UIState extends State<UI> {
           children: [
             Text(
               isStudent ? 'STUDENT LOGIN' : 'DRIVER LOGIN',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 20),
-            TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                onChanged: (value) {
-                  setState(() {//set management
-                    email = value;
-                  });
-                }),
-            SizedBox(height: 10),
-            TextFormField(
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
-              },
-            ),
+            TextField(
+          decoration: InputDecoration(
+              hintText: "Email",
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  borderSide: BorderSide.none),
+              fillColor: Theme.of(context).primaryColor.withOpacity(0.1),
+              filled: true,
+              prefixIcon: Icon(Icons.person)),
+        ),
+        SizedBox(height: 10),
+        TextField(
+          decoration: InputDecoration(
+            hintText: "Password",
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none),
+            fillColor: Theme.of(context).primaryColor.withOpacity(0.1),
+            filled: true,
+            prefixIcon: Icon(Icons.person),
+          ),
+          obscureText: true,
+        ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-<<<<<<< HEAD
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
-                  return LocationsPage();
-                },),);
-=======
-               login();
->>>>>>> 1539f06958eafa40aa369b40ee2ddb279aabf01b
-              },
-              child: Text('Log In'),
+              onPressed: () {},
+              child: Text('Login', style: TextStyle(fontSize: 20),
+              ),
+              style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 67),
+          ),
             ),
             SizedBox(height: 10),
             TextButton(
               onPressed: toggleLoginOption,
-              child: Text(isStudent ? 'Log in as Driver' : 'Log in as Student'),
+              child: Text(isStudent ? 'Log in as Driver' : 'Log in as Student', style: TextStyle(fontSize: 20),),
             ),
           ],
         ),
