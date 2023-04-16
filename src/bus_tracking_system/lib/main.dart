@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: LoginPage(),
-      ),
+      theme: ThemeData(),
+      home: splash(),
     );
   }
 }
+
 
 class LoginPage extends StatefulWidget {
   @override
