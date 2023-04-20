@@ -8,6 +8,6 @@ so that they can board the bus without any hassel.
 
 ## Tech Stack
 - [ ] Flutter
-- [ ] MongoDB
+- [ ] Firebase
 
 Feel free to contribute!
