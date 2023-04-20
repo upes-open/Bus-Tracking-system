@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_maps_flutter: ^2.2.5
+  location: ^4.4.0
+  flutter_polyline_points: ^1.0.0
   # ui: ^0.0.1
 
 
