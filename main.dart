@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project/screen/locations/locations_page.dart';
+import 'package:bus_tracking_system/screen/locations/locations_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
