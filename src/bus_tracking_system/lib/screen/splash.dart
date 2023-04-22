@@ -41,7 +41,7 @@ _navigatetohome();
                   " UPES BUS TARCKER",
                   style: TextStyle(
                     height: 5,
-                    color: Color(0xff0369a0),
+                    color: Colors.blueAccent,
                     fontWeight: FontWeight.bold,
                     fontSize: 30.0,
                   ),
