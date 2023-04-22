@@ -7,7 +7,7 @@ class LocationsPage extends StatefulWidget {
 }
 
 class _LocationsPageState extends State<LocationsPage> {
-  List<String> _locations = [
+  final List<String> _locations = [
     'Prem Nagar UPES',
     'Clock Tower',
     'Dehradun ISBT',
@@ -20,7 +20,7 @@ class _LocationsPageState extends State<LocationsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'Select Route',
           style: TextStyle(color: Colors.black),
         ),
@@ -30,43 +30,44 @@ class _LocationsPageState extends State<LocationsPage> {
           children: [
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: _locations.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   child: Card(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             _locations[index],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
-                          SizedBox(height: 5),
-                          Text(
+                          const SizedBox(height: 5),
+                          const Text(
                             'Driver: John Doe',
                             style: TextStyle(
                                 fontWeight: FontWeight.normal, fontSize: 12),
                           ),
-                          SizedBox(height: 5),
-                          Text(
+                          const SizedBox(height: 5),
+                          const Text(
                             'Phone: +91-7894521642',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.normal),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 '',
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
@@ -87,8 +88,8 @@ class _LocationsPageState extends State<LocationsPage> {
                                   style: TextStyle(color: Colors.white),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Colors.pink,
-                                  padding: EdgeInsets.symmetric(
+                                  primary: Colors.blue,
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 50, vertical: 15),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
