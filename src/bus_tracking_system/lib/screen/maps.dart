@@ -39,7 +39,7 @@ class _BustrackingState extends State<Bus_tracking> {
               Flexible(
                 child: FlutterMap(
                   options: MapOptions(
-                      center: LatLng(locationonmap1(), locationonmap2()),
+                      center: LatLng(30.4159, 77.9668),
                       zoom: 13),
                   children: [
                     TileLayer(

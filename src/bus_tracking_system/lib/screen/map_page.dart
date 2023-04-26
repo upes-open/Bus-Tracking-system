@@ -1,3 +1,4 @@
+import 'package:bus_tracking_system/screen/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/screen/select_routes.dart';
 
@@ -32,13 +33,9 @@ class MapPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SelectRoutesPage(
-                      location1: 'Current Location',
-                      location2: location,
-                      timeTaken: 30,
-                      startingTime: '8:00',
-                      endingTime: '8:30',
-                    ),
+                    builder: (BuildContext context) {
+                      return Bus_tracking();
+                    },
                   ),
                 );
               },
