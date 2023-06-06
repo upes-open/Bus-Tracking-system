@@ -11,71 +11,85 @@ class Bus_tracking extends StatefulWidget {
 }
 
 class _BustrackingState extends State<Bus_tracking> {
-  locationonmap1() async {
-    await Geolocator.checkPermission();
-    await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    double s1 = position.latitude;
-    return s1;
+  LatLng _currentLocation = LatLng(0, 0); //Source Location
+  LatLng _destinationLocation = LatLng(
+      30.4159, 77.9668); //Destination Location(must be connected to firebase)
+  MapController _mapController = MapController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
   }
 
-  locationonmap2() async {
-    await Geolocator.checkPermission();
-    await Geolocator.requestPermission();
+  _getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    double s2 = position.longitude;
-    return s2;
+    setState(() {
+      _currentLocation = LatLng(position.latitude, position.longitude);
+      _mapController.move(_currentLocation, 15.0);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Flexible(
-                child: FlutterMap(
-                  options: MapOptions(
-                      center: LatLng(30.4159, 77.9668),
-                      zoom: 13),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          point: LatLng(30.4159, 77.9668),
-                          width: 80,
-                          height: 80,
-                          builder: (context) => Icon(Icons.pin_drop),
+      appBar: AppBar(
+        title: Text('Flutter Map Demo'),
+      ),
+      body: _currentLocation == null
+          ? Center(child: CircularProgressIndicator())
+          : FlutterMap(
+              options: MapOptions(
+                center: _currentLocation,
+                zoom: 15.0,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: _currentLocation,
+                      builder: (ctx) => Container(
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.green,
+                          size: 40.0,
                         ),
-                      ],
+                      ),
                     ),
-                    PolylineLayer(
-                      polylineCulling: true,
-                      polylines: [
-                        Polyline(
-                          points: [
-                            LatLng(30.4159, 77.9668),
-                            LatLng(30.289189, 77.998667),
-                          ],
-                          color: Colors.blue,
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: _destinationLocation,
+                      builder: (ctx) => Container(
+                        child: Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                          size: 40.0,
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: [_currentLocation, _destinationLocation],
+                      color: Colors.blue,
+                      strokeWidth: 4.0,
+                    ),
+                  ],
+                ),
+              ],
+              mapController: _mapController,
+            ),
     );
   }
 }
