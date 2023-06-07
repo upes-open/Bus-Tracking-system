@@ -55,7 +55,7 @@ class _UIState extends State<UI> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                    Color(0x6645b6fe),
+                    Color(0xff45b6fe),
                     Color(0x9945b6fe),
                     Color(0xcc45b6fe),
                     Color(0xff45b6fe),
@@ -69,6 +69,8 @@ class _UIState extends State<UI> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                          //for logoof profile or lock
+
                           /*Text(
                     /*isStudent ? "" : "",
                     style: TextStyle(
@@ -76,12 +78,16 @@ class _UIState extends State<UI> {
                       fontWeight: FontWeight.bold,
                       decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10),
                             ),
-                    ),*/
-                  ),*/
+                    ),*/*/
 
-                          SizedBox(height: 100),
+                          const Icon(
+                            Icons.lock,
+                            size: 125,
+                          ),
+
+                          SizedBox(height: 75),
 
                           /* var  border = OutlineInputBorder(
                               borderRadius: BorderRadius.circular(18)
