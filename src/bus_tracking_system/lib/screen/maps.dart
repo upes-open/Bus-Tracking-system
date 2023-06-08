@@ -32,15 +32,28 @@ class _BustrackingState extends State<Bus_tracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+        body: Center(
+            child: Stack(children: <Widget>[
+      Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Color(0xff45b6fe),
+              Color(0x9945b6fe),
+              Color(0xcc45b6fe),
+              Color(0xff45b6fe),
+            ])),
         child: Container(
           child: Column(
             children: [
               Flexible(
                 child: FlutterMap(
-                  options: MapOptions(
-                      center: LatLng(30.4159, 77.9668),
-                      zoom: 13),
+                  options:
+                      MapOptions(center: LatLng(30.4159, 77.9668), zoom: 13),
                   children: [
                     TileLayer(
                       urlTemplate:
@@ -76,6 +89,6 @@ class _BustrackingState extends State<Bus_tracking> {
           ),
         ),
       ),
-    );
+    ])));
   }
 }
