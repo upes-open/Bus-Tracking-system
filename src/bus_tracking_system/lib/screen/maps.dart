@@ -32,21 +32,7 @@ class _BustrackingState extends State<Bus_tracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-            child: Stack(children: <Widget>[
-      Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-              Color(0xff45b6fe),
-              Color(0x9945b6fe),
-              Color(0xcc45b6fe),
-              Color(0xff45b6fe),
-            ])),
+      body: Center(
         child: Container(
           child: Column(
             children: [
@@ -89,6 +75,6 @@ class _BustrackingState extends State<Bus_tracking> {
           ),
         ),
       ),
-    ])));
+    );
   }
 }
