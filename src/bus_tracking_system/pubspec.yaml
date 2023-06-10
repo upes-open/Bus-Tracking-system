@@ -30,9 +30,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_maps_flutter: ^2.2.5
-  location: ^4.4.0
-  flutter_polyline_points: ^1.0.0
   # ui: ^0.0.1
 
 
@@ -44,8 +41,10 @@ dependencies:
   firebase_auth: ^4.4.0
   cloud_firestore: ^4.5.2
   shared_preferences: ^2.0.17
-  flutter_map: ^3.1.0
-  geolocator: ^9.0.2
+  flutter_map: ^4.0.0
+  geolocator: ^7.0.3
+  latlong2: ^0.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
