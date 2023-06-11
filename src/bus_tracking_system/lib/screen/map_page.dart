@@ -34,7 +34,7 @@ class MapPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return Bus_tracking();
+                      return BusTracking();
                     },
                   ),
                 );
