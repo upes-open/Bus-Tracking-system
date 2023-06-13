@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Constants/constants.dart';
 
 class BusTracking extends StatefulWidget {
@@ -22,10 +22,13 @@ class _BusTrackingState extends State<BusTracking> {
   LatLng destinationLocation = LatLng(30.3253,
       78.0413); //Destination Location (retrieved from the firebase database; must be connected to firebase)
   List<LatLng> polylinePoints = [];
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
+    initNotifications();
     requestPermission();
   }
 
@@ -100,6 +103,52 @@ class _BusTrackingState extends State<BusTracking> {
     }
   }
 
+  //Notification Alert for Bus_Arrival
+  Future<void> initNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+    );
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'bus_arrival_channel',
+      'Bus Arrival',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Bus is about to reach',
+      'The bus will arrive within 2 minutes.',
+      platformChannelSpecifics,
+    );
+  }
+
   //Calculate distance and time through an API request using OpenRouteService API
   Future<void> calculateDistanceAndTime() async {
     setState(() {
@@ -122,6 +171,11 @@ class _BusTrackingState extends State<BusTracking> {
           double duration = (route['segments'][0]['duration'] / 60);
           time = formatTime(duration);
         });
+        //This will display an alert that the bus is near
+        time = '1';
+        if (double.parse(time) <= 2) {
+          showNotification();
+        }
       } else {
         throw Exception('Failed to load data');
       }
