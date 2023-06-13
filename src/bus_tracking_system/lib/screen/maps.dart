@@ -172,7 +172,6 @@ class _BusTrackingState extends State<BusTracking> {
           time = formatTime(duration);
         });
         //This will display an alert that the bus is near
-        time = '1';
         if (double.parse(time) <= 2) {
           showNotification();
         }
