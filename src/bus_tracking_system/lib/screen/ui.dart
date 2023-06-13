@@ -47,16 +47,27 @@ class _UIState extends State<UI> {
             ),
             ),
             const SizedBox(height:80),
-            Padding(padding: const EdgeInsets.symmetric(horiOntal:25.0),
-            child: TextField(
+            Padding(padding: const EdgeInsets.symmetric(horizontal:25.0),
+            child: const TextField(
               decoration: InputDecoration(
-                enabledBorder: const
+                enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.cyan),
+                   borderRadius: BorderRadius.circular(18.0),
+
+                  
+                ),
+                fillColor: Colors.grey.shade200,
+                filled: true,
+
               ),
-            ),)
-            
+            ),
+            ),
+            //for passwode textfield now 
+
 
               
-            ),)  
+            ),
+            )  
                 
         ],)
     
