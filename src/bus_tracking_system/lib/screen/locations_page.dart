@@ -118,7 +118,7 @@ class _LocationsPageState extends State<LocationsPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Bus_tracking(),
+                  builder: (context) => BusTracking(),
                 ),
               );
             },
@@ -159,7 +159,7 @@ class _LocationsPageState extends State<LocationsPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Bus_tracking(),
+                            builder: (context) => BusTracking(),
                           ),
                         );
                       },
