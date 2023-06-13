@@ -36,27 +36,27 @@ class _UIState extends State<UI> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
+    return const Scaffold(
+        backgroundColor: Color.fromARGB(255, 231, 220, 220),
         body: Column(children: [
-          const SizedBox(height:50),
+          SizedBox(height:50),
             Text('Sign up',
             style: TextStyle(
-              color: Colors.cyan[300],
+              color: Color.fromARGB(255, 58, 212, 232),
               fontSize:36,
             ),
             ),
-            const SizedBox(height:80),
-            Padding(padding: const EdgeInsets.symmetric(horizontal:25.0),
-            child: const TextField(
-              decoration: InputDecoration(
+            SizedBox(height:80),
+            Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
+            child: TextField(
+              decoration: InputDecoration( 
                 enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.cyan),
-                   borderRadius: BorderRadius.circular(18.0),
+                borderSide: BorderSide(color: Color.fromARGB(255, 30, 170, 188)),
+                //borderRadius: BorderRadius.all(18 as Radius)
 
                   
                 ),
-                fillColor: Colors.grey.shade200,
+                fillColor: Color.fromARGB(255, 228, 221, 221),
                 filled: true,
 
               ),
