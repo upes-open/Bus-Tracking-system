@@ -37,56 +37,32 @@ class _UIState extends State<UI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'BUS TRACKER',
-        ),
-      ),
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          child: Stack(children: <Widget>[
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Color(0xff45b6fe),
-                    Color(0x9945b6fe),
-                    Color(0xcc45b6fe),
-                    Color(0xff45b6fe),
-                  ])),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 60),
-                child: Form(
-                    key: _formfield,
-                    child: SingleChildScrollView(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                          //for logoof profile or lock
+        backgroundColor: Colors.white,
+        body: Column(children: [
+          const SizedBox(height:50),
+            Text('Sign up',
+            style: TextStyle(
+              color: Colors.cyan[300],
+              fontSize:36,
+            ),
+            ),
+            const SizedBox(height:80),
+            Padding(padding: const EdgeInsets.symmetric(horiOntal:25.0),
+            child: TextField(
+              decoration: InputDecoration(
+                enabledBorder: const
+              ),
+            ),)
+            
 
-                          /*Text(
-                    /*isStudent ? "" : "",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      decoration: BoxDecoration(
-                              color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            ),
-                    ),*/*/
+              
+            ),)  
+                
+        ],)
+    
+                       
 
-                          const Icon(
-                            Icons.lock,
-                            size: 125,
-                          ),
-
+                   
                           SizedBox(height: 75),
 
                           /* var  border = OutlineInputBorder(
@@ -197,14 +173,7 @@ class _UIState extends State<UI> {
                               selectionColor: Colors.blueAccent,
                             ),
                           ),
-                        ]))),
-              ),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
+
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

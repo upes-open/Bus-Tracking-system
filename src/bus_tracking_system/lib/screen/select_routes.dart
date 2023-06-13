@@ -46,14 +46,18 @@ class SelectRoutesPage extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        height: double.infinity,
+        width: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue, Colors.indigo],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+              Color(0xff45b6fe),
+              Color(0x9945b6fe),
+              Color(0xcc45b6fe),
+              Color(0x6645b6fe),
+            ])),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +67,6 @@ class SelectRoutesPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
@@ -78,7 +81,6 @@ class SelectRoutesPage extends StatelessWidget {
                 'Time Taken: $timeTaken mins',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
@@ -93,7 +95,6 @@ class SelectRoutesPage extends StatelessWidget {
                 'Starting Time: $startingTime',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
@@ -108,7 +109,6 @@ class SelectRoutesPage extends StatelessWidget {
                 'Ending Time: $endingTime',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
                   shadows: [
                     Shadow(
                       blurRadius: 2.0,
