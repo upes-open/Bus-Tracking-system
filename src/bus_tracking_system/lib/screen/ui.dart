@@ -46,8 +46,12 @@ class _UIState extends State<UI> {
               fontSize:36,
             ),
             ),
+
+            
             SizedBox(height:80),
-            Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
+            
+            
+Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
             child: TextField(
               decoration: InputDecoration( 
                 enabledBorder: OutlineInputBorder(
@@ -62,25 +66,15 @@ class _UIState extends State<UI> {
               ),
             ),
             ),
-            //for passwode textfield now 
-
-
               
-            ),
-            )  
+            
+    
                 
-        ],)
+        
     
                        
 
                    
-                          SizedBox(height: 75),
-
-                          /* var  border = OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18)
-                              borderSide: const BorderSide(color: Colors.white)
-                          )*/
-
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: emailController,
@@ -204,6 +198,9 @@ class _UIState extends State<UI> {
         //sharedrefences
         await HelperFunctions.savedUserLoggedInStatus(true);
         await HelperFunctions.savedUserEmailSF(email);
+        )
+    ),
+    );
       }
     });
   }
