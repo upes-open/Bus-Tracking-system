@@ -56,12 +56,9 @@ To minimize the chances of missing a student
 > Star ⭐ and fork the repository... <br>
 > Clone the repository on your local machine... <br>
 ```bash
-  git clone https://github.com/upes-open/one-stop-solution.git
+  git clone https://github.com/upes-open/Bus-Tracking-system.git
 ```
-Go to the project directory
-```bash
-  cd one-stop-solution-main/src/one_stop_solution
-```
+> Go to the project directory
 > Get assigned yourself the issue you want to contribute.<br>
 > Start working on the assigned issue.
 Contributions are always welcome!
