@@ -11,9 +11,9 @@ To provide convenience to the students availing of the bus facility.
 To minimize the chances of missing a student 
 
 ## Permissions Required
-- 1 Location Access
-- 2 Send user data to database
-- 3 Notification Alert
+-  Location Access
+-  Send user data to database
+-  Notification Alert
 
 ## Tech Stack
 - [ ] Flutter
@@ -32,8 +32,6 @@ To minimize the chances of missing a student
 - Cloud Firestore: Firebase Cloud Firestore is a flexible, scalable NoSQL database for mobile, web, and server development. Flutter Firebase provides seamless integration with Cloud Firestore, allowing you to store and query structured data in your Flutter app.
 
 - Cloud Storage: Firebase Cloud Storage provides a secure and scalable solution for storing and serving user-generated content such as images, videos, and files. With Flutter Firebase, you can easily upload, download, and manage files in Firebase Cloud Storage.
-
-- Cloud Messaging: Firebase Cloud Messaging (FCM) enables you to send push notifications to your app users. Flutter Firebase allows you to integrate FCM into your Flutter app and send targeted notifications to specific devices or user segments.
 
 - Remote Config: Firebase Remote Config allows you to remotely configure and customize your app without requiring users to update the app. With Flutter Firebase, you can easily use Remote Config to define and deploy parameters that can be changed in real time.
 
