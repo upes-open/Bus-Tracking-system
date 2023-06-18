@@ -6,6 +6,10 @@ It uses Flutter and Google Maps API to get the live location of drivers and user
 and displays the estimated time the bus will take to reach the user's stop 
 so that they can board the bus without any hassel.
 
+## Motive
+<>To provide convenience to the students availing of the bus facility.
+<>To minimize the chances of missing a student 
+
 ## Tech Stack
 - [ ] Flutter
 - [ ] Firebase
