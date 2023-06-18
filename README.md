@@ -58,7 +58,8 @@ To minimize the chances of missing a student
 ```bash
   git clone https://github.com/upes-open/Bus-Tracking-system.git
 ```
-> Go to the project directory
+> Go to the project directory <br>
 > Get assigned yourself the issue you want to contribute.<br>
-> Start working on the assigned issue.
-Contributions are always welcome!
+> Start working on the assigned issue.<br>
+
+### Contributions are always welcome!
