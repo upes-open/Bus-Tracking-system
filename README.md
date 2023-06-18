@@ -19,6 +19,9 @@ To minimize the chances of missing a student
 - [ ] Flutter
 - [ ] Firebase
 
+## Contributors
+<img src = "https://contrib.rocks/image?repo=upes-open/Bus-Tracking-system">
+
 ## Functionality
 ### Functionality of Flutter Firebase:
 
@@ -49,4 +52,16 @@ To minimize the chances of missing a student
 - Gestures and Interactions: Flutter Maps supports various gestures and interactions, such as panning, zooming, rotation, and tilt. Users can interact with the map using touch gestures to explore and navigate the map view.
 
 
-## Feel free to contribute!
+## How to contribute ?
+> Star ⭐ and fork the repository... <br>
+> Clone the repository on your local machine... <br>
+```bash
+  git clone https://github.com/upes-open/one-stop-solution.git
+```
+Go to the project directory
+```bash
+  cd one-stop-solution-main/src/one_stop_solution
+```
+> Get assigned yourself the issue you want to contribute.<br>
+> Start working on the assigned issue.
+Contributions are always welcome!
