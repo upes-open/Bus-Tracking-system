@@ -9,17 +9,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/screen/locations_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 
 class UI extends StatefulWidget {
+  const UI({super.key});
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   //is a
   @override
   State<UI> createState() => _UIState();
 }
 
 class _UIState extends State<UI> {
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   bool isStudent = true;
   late final String email;
   late final String password;
@@ -27,67 +29,81 @@ class _UIState extends State<UI> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
+  
+ 
 
   void toggleLoginOption() {
     setState(() {
       isStudent = !isStudent;
+     String  hinttext = labelText :isStudent
+                                  ? " Student@domain" 
+                                  : "driver@email";
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 220, 220),
-        body: Column(children: [
-          SizedBox(height:50),
-            Text('Sign up',
-            style: TextStyle(
-              color: Color.fromARGB(255, 58, 212, 232),
-              fontSize:36,
-            ),
-            ),
-
-            
-            SizedBox(height:80),
-            
-            
-Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
-            child: TextField(
-              decoration: InputDecoration( 
-                enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Color.fromARGB(255, 30, 170, 188)),
-                //borderRadius: BorderRadius.all(18 as Radius)
-
-                  
-                ),
-                fillColor: Color.fromARGB(255, 228, 221, 221),
-                filled: true,
-
+      backgroundColor: Color.fromARGB(255, 231, 220, 220),
+      body: Column(children: [
+        SizedBox(height: 50),
+        Text(
+          'Sign up',
+          style: TextStyle(
+            color: Color.fromARGB(255, 58, 212, 232),
+            fontSize: 36,
               ),
+        ),
+            SizedBox(height: 80),
+            TextField(
+              controller: usernameController,
+           hintText: =  'hinttext',
+                                  
+              obscureText:  true,
             ),
-            ),
-              
-            
-    
-                
         
-    
-                       
+        cosnt SizedBox(height: 50),
+        controller: passwordController,
+        hintText: 'Password',
+        obscureText: true,
+        SizedBox(height: 120),   
+        Mybutton(
+          label: 'Sign up',
+          onPressed: () async {
+            if (_formfield.currentState!.validate()) {
+              dynamic result = await _auth.registerWithEmailAndPassword(
+                  emailController.text, passController.text);
+              if (result == null) {
+                print("error");
+              } else {
+                print("success");
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LocationsPage()));
+              }
+            }
+          },
+        ),   ]),
+    );
+  }
+}
 
-                   
-                          TextFormField(
+
+/*
+   TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: emailController,
                             decoration: InputDecoration(
                               labelText: isStudent
-                                  ? " Student@domain"
+                                  ? " Student@domain" 
                                   : "driver@email",
                               focusColor: Colors.white12,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide(color: Colors.white),
                               ),
-                              prefixIcon: const Icon(Icons.email),
+                              prefixIcon: Icon(Icons.email),
                             ),
                             validator: (value) {
                               bool emailValid = RegExp(
@@ -99,9 +115,10 @@ Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
                               } else if (!emailValid) {
                                 return "Enter valid Email";
                               }
+                              return null;
                             },
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: passController,
@@ -111,7 +128,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
-                                    const BorderSide(color: Colors.white),
+                                    BorderSide(color: Colors.white),
                               ),
                               prefixIcon: Icon(Icons.lock),
                               suffixIcon: InkWell(
@@ -130,6 +147,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
                               } else if (passController.text.length < 9) {
                                 return "Password length should be more than 9 characters";
                               }
+                              return null;
                             },
                           ),
                           SizedBox(height: 50),
@@ -155,7 +173,7 @@ Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   "Login",
                                   style: TextStyle(
@@ -205,3 +223,4 @@ Padding(padding: EdgeInsets.symmetric(horizontal:25.0),
     });
   }
 }
+*/
