@@ -29,15 +29,15 @@ class _UIState extends State<UI> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
+  bool labelText = true;
   
  
 
   void toggleLoginOption() {
     setState(() {
       isStudent = !isStudent;
-     String  hinttext = labelText :isStudent
-                                  ? " Student@domain" 
-                                  : "driver@email";
+String hinttext = labelText ? "Student@domain" : "driver@email";
+
     });
   }
 
