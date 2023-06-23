@@ -1,21 +1,20 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/Constants/constants.dart';
 import 'package:bus_tracking_system/helper/helperFunction.dart';
+import 'package:bus_tracking_system/screen/maps.dart';
 import 'package:bus_tracking_system/screen/splash.dart';
 import 'package:bus_tracking_system/services/authServices.dart';
 import 'package:bus_tracking_system/services/databaseServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/screen/locations_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bus_tracking_system/componentes/MyButton.dart';
 
 class UI extends StatefulWidget {
-  const UI({super.key});
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  const UI({Key? key}) : super(key: key);
 
-  //is a
   @override
   State<UI> createState() => _UIState();
 }
@@ -30,65 +29,83 @@ class _UIState extends State<UI> {
   final passController = TextEditingController();
   bool passToggle = true;
   bool labelText = true;
-  
- 
 
   void toggleLoginOption() {
     setState(() {
       isStudent = !isStudent;
-String hinttext = labelText ? "Student@domain" : "driver@email";
-
     });
+  }
+
+  bool _validatePassword(String value) {
+    if (value.isEmpty) {
+      return true;
+    } else if (value.length < 9) {
+      return true;
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Color.fromARGB(255, 231, 220, 220),
-      body: Column(children: [
-        SizedBox(height: 50),
-        Text(
-          'Sign up',
-          style: TextStyle(
-            color: Color.fromARGB(255, 58, 212, 232),
-            fontSize: 36,
-              ),
-        ),
-            SizedBox(height: 80),
-            TextField(
-              controller: usernameController,
-           hintText: =  'hinttext',
-                                  
-              obscureText:  true,
+      body: Column(
+        children: [
+          SizedBox(height: 50),
+          Text(
+            'Sign up',
+            style: TextStyle(
+              color: Color.fromARGB(255, 58, 212, 232),
+              fontSize: 36,
             ),
-        
-        cosnt SizedBox(height: 50),
-        controller: passwordController,
-        hintText: 'Password',
-        obscureText: true,
-        SizedBox(height: 120),   
-        Mybutton(
-          label: 'Sign up',
-          onPressed: () async {
-            if (_formfield.currentState!.validate()) {
-              dynamic result = await _auth.registerWithEmailAndPassword(
-                  emailController.text, passController.text);
-              if (result == null) {
-                print("error");
-              } else {
-                print("success");
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocationsPage()));
+          ),
+          SizedBox(height: 80),
+          TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              hintText: labelText ? "Student@domain" : "driver@email",
+            ),
+            obscureText: true,
+          ),
+          SizedBox(height: 50),
+          TextField(
+            controller: passController,
+            decoration: InputDecoration(
+              hintText: 'Password',
+              errorText: _validatePassword(passController.text)
+                  ? 'Password length should be more than 9 characters'
+                  : null,
+            ),
+            obscureText: true,
+            onChanged: (value) {
+              setState(() {
+                // Trigger validation when the password field value changes
+                _validatePassword(value);
+              });
+            },
+          ),
+          SizedBox(height: 120),
+          MyButton(
+            label: 'Sign up',
+            onPressed: () async {
+              if (_formfield.currentState!.validate()) {
+                dynamic result = await _auth.loginWithUserEmailandPassword(
+                    emailController.text, passController.text);
+                if (result == null) {
+                  print("error");
+                } else {
+                  print("Login Successful");
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LocationsPage()));
+                }
               }
-            }
-          },
-        ),   ]),
+            },
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 /*
    TextFormField(
