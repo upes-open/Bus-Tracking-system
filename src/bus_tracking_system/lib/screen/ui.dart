@@ -110,7 +110,7 @@ class _UIState extends State<UI> {
               selectionColor: Colors.blueAccent,
             ),
           ),
-          SizedBox(height: 250),
+          SizedBox(height: 50),
           MyButton(
             label: 'Sign up',
             onTab: () async {
