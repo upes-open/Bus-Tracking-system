@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/Constants/constants.dart';
 import 'package:bus_tracking_system/helper/helperFunction.dart';
@@ -7,10 +6,10 @@ import 'package:bus_tracking_system/screen/splash.dart';
 import 'package:bus_tracking_system/services/authServices.dart';
 import 'package:bus_tracking_system/services/databaseServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:bus_tracking_system/screen/locations_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bus_tracking_system/componentes/MyButton.dart';
+
+import 'locations_page.dart';
 
 class UI extends StatefulWidget {
   const UI({Key? key}) : super(key: key);
@@ -45,25 +44,43 @@ class _UIState extends State<UI> {
     return false;
   }
 
+  bool _validateEmail(String value) {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value);
+    return value.isEmpty || !emailValid;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 231, 220, 220),
+      backgroundColor: Color(0xFFF8F8F8),
+      //backgroundColor: Color(0xFFF5F5F5),
+      //backgroundColor: Color(0xFFE6E6FA),
+
+      // backgroundColor: Color(0xFFE8F5E9),
       body: Column(
         children: [
-          SizedBox(height: 50),
+          SizedBox(height: 100),
           Text(
             'Sign up',
             style: TextStyle(
-              color: Color.fromARGB(255, 58, 212, 232),
-              fontSize: 36,
+              color: Color.fromARGB(235, 67, 187, 228),
+              fontFamily: 'Avenir',
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.bold,
+              fontSize: 50,
             ),
           ),
           SizedBox(height: 80),
           TextField(
             controller: emailController,
+            keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: labelText ? "Student@domain" : "driver@email",
+              errorText: _validateEmail(emailController.text)
+                  ? 'Enter valid Email'
+                  : null,
             ),
             obscureText: true,
           ),
@@ -84,19 +101,27 @@ class _UIState extends State<UI> {
               });
             },
           ),
-          SizedBox(height: 120),
+          SizedBox(height: 250),
           MyButton(
             label: 'Sign up',
-            onPressed: () async {
+            onTab: () async {
               if (_formfield.currentState!.validate()) {
                 dynamic result = await _auth.loginWithUserEmailandPassword(
-                    emailController.text, passController.text);
+                  emailController.text,
+                  passController.text,
+                );
                 if (result == null) {
                   print("error");
                 } else {
                   print("Login Successful");
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LocationsPage()));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LocationsPage(),
+
+                      ///direct not reachind!
+                    ),
+                  );
                 }
               }
             },
@@ -106,6 +131,7 @@ class _UIState extends State<UI> {
     );
   }
 }
+
 
 /*
    TextFormField(
