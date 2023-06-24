@@ -101,6 +101,15 @@ class _UIState extends State<UI> {
               });
             },
           ),
+          SizedBox(height: 10),
+          TextButton(
+            onPressed: toggleLoginOption,
+            child: Text(
+              isStudent ? 'Log in as Driver' : 'Log in as Student',
+              style: TextStyle(fontSize: 20),
+              selectionColor: Colors.blueAccent,
+            ),
+          ),
           SizedBox(height: 250),
           MyButton(
             label: 'Sign up',
@@ -111,13 +120,14 @@ class _UIState extends State<UI> {
                   passController.text,
                 );
                 if (result == null) {
-                  print("error");
                 } else {
                   print("Login Successful");
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LocationsPage(),
+                      builder: (BuildContext context) {
+                        return LocationsPage();
+                      },
 
                       ///direct not reachind!
                     ),
@@ -134,6 +144,16 @@ class _UIState extends State<UI> {
 
 
 /*
+
+if (_formfield.currentState!.validate()) {
+                      print("Login Successful");
+                      emailController.clear();
+                      passController.clear();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return LocationsPage();
    TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             controller: emailController,
