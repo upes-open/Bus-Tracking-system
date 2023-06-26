@@ -55,7 +55,7 @@ class _UIState extends State<UI> {
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Color(0xFFF8F8F8),
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: Color(0xFFF8F9FD),
       //backgroundColor: Color.fromARGB(255, 224, 224, 244),
 
       // backgroundColor: Color(0xFFE8F5E9),
@@ -65,7 +65,7 @@ class _UIState extends State<UI> {
           Text(
             'Sign up',
             style: TextStyle(
-              color: Color.fromARGB(235, 67, 187, 228),
+              color: Color(0xFF34BAC3),
               fontFamily: 'Avenir',
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.bold,
