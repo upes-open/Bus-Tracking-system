@@ -21,17 +21,14 @@ class MyButton extends StatelessWidget {
             //
 
             //
-            Color.fromARGB(255, 74, 162, 216),
+            Color(0xFF13A4DD),
+            Color(0xFF189FDF),
+            Color(0xFF18A0DC),
 
-            Color.fromARGB(255, 65, 169, 228),
-            Color.fromARGB(255, 96, 168, 184),
-
-            // Color.fromARGB(210, 74, 187, 224),
-            Color.fromARGB(229, 41, 180, 211),
-
-            // Color(0xFF38B1D0),
-
-            Color(0xFF22CCD1),
+            Color(0xFF15A9D7),
+            Color(0xFF11B1D5),
+            Color(0xFF13B7D3),
+            Color(0xFF12BFCF),
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,

@@ -65,7 +65,8 @@ class _UIState extends State<UI> {
           Text(
             'Sign up',
             style: TextStyle(
-              color: Color(0xFF34BAC3),
+              //color: Color(0xFF34BAC3),
+              color: Color(0xFF1CBBBE),
               fontFamily: 'Avenir',
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.bold,
@@ -112,7 +113,7 @@ class _UIState extends State<UI> {
               selectionColor: Colors.blueAccent,
             ),
           ),
-          SizedBox(height: 100),
+          SizedBox(height: 150),
           MyButton(
             label: 'Sign up',
             onTab: () async {
