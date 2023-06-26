@@ -8,6 +8,7 @@ import 'package:bus_tracking_system/services/databaseServices.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bus_tracking_system/componentes/MyButton.dart';
+import 'package:bus_tracking_system/componentes/My_TextField.dart';
 
 import 'locations_page.dart';
 
@@ -27,7 +28,6 @@ class _UIState extends State<UI> {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   bool passToggle = true;
-  bool labelText = true;
 
   void toggleLoginOption() {
     setState(() {
@@ -54,8 +54,8 @@ class _UIState extends State<UI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8),
-      //backgroundColor: Color(0xFFF5F5F5),
+      //backgroundColor: Color(0xFFF8F8F8),
+      backgroundColor: Color(0xFFF5F5F5),
       //backgroundColor: Color(0xFFE6E6FA),
 
       // backgroundColor: Color(0xFFE8F5E9),
@@ -73,35 +73,37 @@ class _UIState extends State<UI> {
             ),
           ),
           SizedBox(height: 80),
-          TextField(
+          MyTextField(
             controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: labelText ? "Student@domain" : "driver@email",
-              errorText: _validateEmail(emailController.text)
-                  ? 'Enter valid Email'
-                  : null,
-            ),
-            obscureText: true,
-          ),
-          SizedBox(height: 50),
-          TextField(
-            controller: passController,
-            decoration: InputDecoration(
-              hintText: 'Password',
-              errorText: _validatePassword(passController.text)
-                  ? 'Password length should be more than 9 characters'
-                  : null,
-            ),
-            obscureText: true,
-            onChanged: (value) {
-              setState(() {
-                // Trigger validation when the password field value changes
-                _validatePassword(value);
-              });
+            obscureText: false,
+            hintText:
+                isStudent ? 'Enter student email' : 'Enter bus-driver email',
+            validator: (value) {
+              bool emailValid = RegExp(
+                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
+                  .hasMatch(value!);
+
+              if (value.isEmpty) {
+                return "Enter Email";
+              } else if (!emailValid) {
+                return "Enter valid Email";
+              }
             },
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
+          MyTextField(
+            controller: passController,
+            hintText: 'Password',
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Enter Password';
+              } else if (passController.text.length < 9) {
+                return "Password length should be more than 9 characters";
+              }
+            },
+            obscureText: true,
+          ),
+          SizedBox(height: 20),
           TextButton(
             onPressed: toggleLoginOption,
             child: Text(
@@ -110,7 +112,7 @@ class _UIState extends State<UI> {
               selectionColor: Colors.blueAccent,
             ),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 100),
           MyButton(
             label: 'Sign up',
             onTab: () async {
