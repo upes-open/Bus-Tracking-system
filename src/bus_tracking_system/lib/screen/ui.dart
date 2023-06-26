@@ -35,22 +35,6 @@ class _UIState extends State<UI> {
     });
   }
 
-  bool _validatePassword(String value) {
-    if (value.isEmpty) {
-      return true;
-    } else if (value.length < 9) {
-      return true;
-    }
-    return false;
-  }
-
-  bool _validateEmail(String value) {
-    bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value);
-    return value.isEmpty || !emailValid;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
