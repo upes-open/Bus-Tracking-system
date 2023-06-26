@@ -56,7 +56,7 @@ class _UIState extends State<UI> {
     return Scaffold(
       //backgroundColor: Color(0xFFF8F8F8),
       backgroundColor: Color(0xFFF5F5F5),
-      //backgroundColor: Color(0xFFE6E6FA),
+      //backgroundColor: Color.fromARGB(255, 224, 224, 244),
 
       // backgroundColor: Color(0xFFE8F5E9),
       body: Column(
