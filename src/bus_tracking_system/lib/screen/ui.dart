@@ -25,10 +25,10 @@ class _UIState extends State<UI> {
   bool isStudent = true;
   late final String email;
   late final String password;
-  final _formfield = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // Updated key name
   final emailController = TextEditingController();
   final passController = TextEditingController();
-  bool passToggle = true;
+  bool passToggle = false;
 
   get validator => null;
 
@@ -44,107 +44,122 @@ class _UIState extends State<UI> {
       //backgroundColor: Color(0xFFF8F8F8),
       backgroundColor: Color(0xFFF8F9FD),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //backgroundColor: Color.fromARGB(255, 224, 224, 244),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              //backgroundColor: Color.fromARGB(255, 224, 224, 244),
 
-            // backgroundColor: Color(0xFFE8F5E9),
+              // backgroundColor: Color(0xFFE8F5E9),
 
-            SizedBox(height: 100),
-            Text(
-              'Sign up',
-              style: TextStyle(
-                //color: Color(0xFF34BAC3),
-                color: Color(0xFF1CBBBE),
-                fontFamily: 'Avenir',
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.bold,
-                fontSize: 50,
-              ),
-            ),
-            SizedBox(height: 80),
-            MyTextField(
-              controller: emailController,
-              obscureText: false,
-              hintText:
-                  isStudent ? 'Enter student email' : 'Enter bus-driver email',
-              validator: (value) {
-                bool emailValid = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value!);
-
-                if (value.isEmpty) {
-                  return "Enter Email";
-                } else if (!emailValid) {
-                  return "Enter valid Email";
-                }
-              },
-              keyboardType: TextInputType.emailAddress,
-              decoration: null,
-            ),
-            SizedBox(height: 20),
-            MyTextField(
-              keyboardType: TextInputType.emailAddress,
-              controller: passController,
-              obscureText: passToggle, // Toggle the visibility of the text
-              decoration: InputDecoration(
-                suffixIcon: InkWell(
-                  onTap: () {
-                    setState(() {
-                      passToggle = !passToggle;
-                    });
-                  },
-                  child: Icon(
-                    passToggle ? Icons.visibility : Icons.visibility_off,
-                  ),
+              SizedBox(height: 100),
+              Text(
+                'Sign up',
+                style: TextStyle(
+                  //color: Color(0xFF34BAC3),
+                  color: Color(0xFF1CBBBE),
+                  fontFamily: 'Avenir',
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 50,
                 ),
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Enter Password';
-                } else if (passController.text.length < 9) {
-                  return "Password length should be more than 9 characters";
-                }
-                return null; // Return null if validation passes
-              },
-              hintText: 'Password',
-            ),
-            SizedBox(height: 20),
-            TextButton(
-              onPressed: toggleLoginOption,
-              child: Text(
-                isStudent ? 'Log in as Driver' : 'Log in as Student',
-                style: TextStyle(fontSize: 20),
-                selectionColor: Colors.blueAccent,
-              ),
-            ),
-            SizedBox(height: 150),
-            MyButton(
-              label: 'Sign up',
-              onTap: () async {
-                if (_formfield.currentState!.validate()) {
-                  String password = passController.text;
-                  dynamic result = await _auth.loginWithUserEmailandPassword(
-                    emailController.text,
-                    password,
-                  );
-                  if (result == null) {
-                    // Handle login failure
-                  } else {
-                    print("Login Successful");
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return LocationsPage();
-                        },
-                      ),
-                    );
+              SizedBox(height: 80),
+              MyTextField(
+                controller: emailController,
+                obscureText: false,
+                hintText: isStudent
+                    ? 'Enter student email'
+                    : 'Enter bus-driver email',
+                validator: (value) {
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value!);
+
+                  if (value.isEmpty) {
+                    return "Enter Email";
+                  } else if (!emailValid) {
+                    return "Enter valid Email";
                   }
-                }
-              },
-            ),
-          ],
+                  return null;
+                },
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: isStudent
+                      ? 'Enter student email'
+                      : 'Enter bus-driver email',
+                  hintStyle: TextStyle(
+                    color: Color.fromARGB(169, 106, 196, 207),
+                    fontSize: 18.0,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+              SizedBox(height: 20),
+
+              MyTextField(
+                keyboardType: TextInputType.emailAddress,
+                controller: passController,
+                obscureText: passToggle,
+                decoration: InputDecoration(
+                  suffixIcon: InkWell(
+                    onTap: () {
+                      setState(() {
+                        passToggle = !passToggle;
+                      });
+                    },
+                    child: Icon(
+                      passToggle ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter Password';
+                  } else if (passController.text.length < 9) {
+                    return "Password length should be more than 9 characters";
+                  }
+                  return null;
+                },
+                hintText: 'Password',
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: toggleLoginOption,
+                child: Text(
+                  isStudent ? 'Log in as Driver' : 'Log in as Student',
+                  style: TextStyle(fontSize: 20),
+                  selectionColor: Colors.blueAccent,
+                ),
+              ),
+              SizedBox(height: 150),
+              MyButton(
+                label: 'Sign up',
+                onTap: () async {
+                  if (_formKey.currentState!.validate()) {
+                    String password = passController.text;
+                    dynamic result = await _auth.loginWithUserEmailandPassword(
+                      emailController.text,
+                      password,
+                    );
+                    if (result == null) {
+                      // Handle login failure
+                    } else {
+                      print("Login Successful");
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return LocationsPage();
+                          },
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

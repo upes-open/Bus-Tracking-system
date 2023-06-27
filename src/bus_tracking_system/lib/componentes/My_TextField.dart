@@ -5,19 +5,18 @@ class MyTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final String? Function(String?)? validator;
+  final TextInputType keyboardType;
+  final InputDecoration decoration;
 
   const MyTextField({
     required this.controller,
     required this.hintText,
     required this.obscureText,
-    this.validator,
-    required TextInputType keyboardType,
-    InputDecoration? decoration,
-  });
-
-  get keyboardType => null;
-
-  get decoration => null;
+    required this.validator,
+    required this.keyboardType,
+    required this.decoration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +40,15 @@ class MyTextField extends StatelessWidget {
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          decoration: decoration ??
-              InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  color: Color.fromARGB(169, 106, 196, 207),
-                  fontSize: 18.0,
-                ),
-                border: InputBorder.none,
-              ),
+          decoration: decoration.copyWith(
+            contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
+            hintText: hintText,
+            hintStyle: TextStyle(
+              color: Color.fromARGB(169, 106, 196, 207),
+              fontSize: 18.0,
+            ),
+            border: InputBorder.none,
+          ),
           validator: validator,
         ),
       ),
