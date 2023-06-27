@@ -11,7 +11,13 @@ class MyTextField extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     this.validator,
+    required TextInputType keyboardType,
+    InputDecoration? decoration,
   });
+
+  get keyboardType => null;
+
+  get decoration => null;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +40,17 @@ class MyTextField extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           obscureText: obscureText,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
-            hintText: hintText,
-            hintStyle: TextStyle(
-              color: Color.fromARGB(169, 106, 196, 207),
-              fontSize: 18.0,
-            ),
-            border: InputBorder.none,
-          ),
+          keyboardType: keyboardType,
+          decoration: decoration ??
+              InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  color: Color.fromARGB(169, 106, 196, 207),
+                  fontSize: 18.0,
+                ),
+                border: InputBorder.none,
+              ),
           validator: validator,
         ),
       ),

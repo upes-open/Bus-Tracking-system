@@ -30,6 +30,8 @@ class _UIState extends State<UI> {
   final passController = TextEditingController();
   bool passToggle = true;
 
+  get validator => null;
+
   void toggleLoginOption() {
     setState(() {
       isStudent = !isStudent;
@@ -41,92 +43,114 @@ class _UIState extends State<UI> {
     return Scaffold(
       //backgroundColor: Color(0xFFF8F8F8),
       backgroundColor: Color(0xFFF8F9FD),
-      //backgroundColor: Color.fromARGB(255, 224, 224, 244),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            //backgroundColor: Color.fromARGB(255, 224, 224, 244),
 
-      // backgroundColor: Color(0xFFE8F5E9),
-      body: Column(
-        children: [
-          SizedBox(height: 100),
-          Text(
-            'Sign up',
-            style: TextStyle(
-              //color: Color(0xFF34BAC3),
-              color: Color(0xFF1CBBBE),
-              fontFamily: 'Avenir',
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.bold,
-              fontSize: 50,
-            ),
-          ),
-          SizedBox(height: 80),
-          MyTextField(
-            controller: emailController,
-            obscureText: false,
-            hintText:
-                isStudent ? 'Enter student email' : 'Enter bus-driver email',
-            validator: (value) {
-              bool emailValid = RegExp(
-                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
-                  .hasMatch(value!);
+            // backgroundColor: Color(0xFFE8F5E9),
 
-              if (value.isEmpty) {
-                return "Enter Email";
-              } else if (!emailValid) {
-                return "Enter valid Email";
-              }
-            },
-          ),
-          SizedBox(height: 20),
-          MyTextField(
-            controller: passController,
-            hintText: 'Password',
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Enter Password';
-              } else if (passController.text.length < 9) {
-                return "Password length should be more than 9 characters";
-              }
-            },
-            obscureText: true,
-          ),
-          SizedBox(height: 20),
-          TextButton(
-            onPressed: toggleLoginOption,
-            child: Text(
-              isStudent ? 'Log in as Driver' : 'Log in as Student',
-              style: TextStyle(fontSize: 20),
-              selectionColor: Colors.blueAccent,
+            SizedBox(height: 100),
+            Text(
+              'Sign up',
+              style: TextStyle(
+                //color: Color(0xFF34BAC3),
+                color: Color(0xFF1CBBBE),
+                fontFamily: 'Avenir',
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.bold,
+                fontSize: 50,
+              ),
             ),
-          ),
-          SizedBox(height: 150),
-          MyButton(
-            label: 'Sign up',
-            onTab: () async {
-              if (_formfield.currentState!.validate()) {
-                dynamic result = await _auth.loginWithUserEmailandPassword(
-                  emailController.text,
-                  passController.text,
-                );
-                if (result == null) {
-                } else {
-                  print("Login Successful");
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return LocationsPage();
-                      },
-                    ),
-                  );
+            SizedBox(height: 80),
+            MyTextField(
+              controller: emailController,
+              obscureText: false,
+              hintText:
+                  isStudent ? 'Enter student email' : 'Enter bus-driver email',
+              validator: (value) {
+                bool emailValid = RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value!);
+
+                if (value.isEmpty) {
+                  return "Enter Email";
+                } else if (!emailValid) {
+                  return "Enter valid Email";
                 }
-              }
-            },
-          ),
-        ],
+              },
+              keyboardType: TextInputType.emailAddress,
+              decoration: null,
+            ),
+            SizedBox(height: 20),
+            MyTextField(
+              keyboardType: TextInputType.emailAddress,
+              controller: passController,
+              obscureText: passToggle, // Toggle the visibility of the text
+              decoration: InputDecoration(
+                suffixIcon: InkWell(
+                  onTap: () {
+                    setState(() {
+                      passToggle = !passToggle;
+                    });
+                  },
+                  child: Icon(
+                    passToggle ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+              ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Enter Password';
+                } else if (passController.text.length < 9) {
+                  return "Password length should be more than 9 characters";
+                }
+                return null; // Return null if validation passes
+              },
+              hintText: 'Password',
+            ),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: toggleLoginOption,
+              child: Text(
+                isStudent ? 'Log in as Driver' : 'Log in as Student',
+                style: TextStyle(fontSize: 20),
+                selectionColor: Colors.blueAccent,
+              ),
+            ),
+            SizedBox(height: 150),
+            MyButton(
+              label: 'Sign up',
+              onTap: () async {
+                if (_formfield.currentState!.validate()) {
+                  String password = passController.text;
+                  dynamic result = await _auth.loginWithUserEmailandPassword(
+                    emailController.text,
+                    password,
+                  );
+                  if (result == null) {
+                    // Handle login failure
+                  } else {
+                    print("Login Successful");
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return LocationsPage();
+                        },
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
-
+}
+/*
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -141,7 +165,32 @@ class _UIState extends State<UI> {
       if (value == true) {
         QuerySnapshot snapshot =
             await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-                .getUserData(email);
+                .getUserData(email);MyButton(
+  label: 'Sign up',
+  onTab: () async {
+    if (_formfield.currentState!.validate()) {
+      String password = passController.text; // Assign password from passController
+      dynamic result = await _auth.loginWithUserEmailandPassword(
+        emailController.text,
+        password,
+      );
+      if (result == null) {
+        // Handle login failure
+      } else {
+        print("Login Successful");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return LocationsPage();
+            },
+          ),
+        );
+      }
+    }
+  },
+),
+
         //sharedrefences
         await HelperFunctions.savedUserLoggedInStatus(true);
         await HelperFunctions.savedUserEmailSF(email);
@@ -294,4 +343,5 @@ if (_formfield.currentState!.validate()) {
     });
   }
 }
+*/
 */

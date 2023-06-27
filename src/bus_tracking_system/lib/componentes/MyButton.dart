@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   final String label;
-  final Function()? onTab;
+  final Function()? onTap;
 
   const MyButton({
     Key? key,
     required this.label,
-    required this.onTab,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -18,13 +18,9 @@ class MyButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            //
-
-            //
             Color(0xFF13A4DD),
             Color(0xFF189FDF),
             Color(0xFF18A0DC),
-
             Color(0xFF15A9D7),
             Color(0xFF11B1D5),
             Color(0xFF13B7D3),
@@ -36,9 +32,8 @@ class MyButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: InkWell(
-        onTap: onTab,
-        borderRadius: BorderRadius.circular(
-            30), // Ensure ripple effect matches the button shape
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(30),
         child: Center(
           child: Text(
             label,
