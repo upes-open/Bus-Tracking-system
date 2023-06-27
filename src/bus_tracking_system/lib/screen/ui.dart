@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:bus_tracking_system/Constants/constants.dart';
 import 'package:bus_tracking_system/helper/helperFunction.dart';
@@ -124,6 +125,28 @@ class _UIState extends State<UI> {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('password', password));
+  }
+
+  login() async {
+    await _auth
+        .loginWithUserEmailandPassword(email, password)
+        .then((value) async {
+      //auth services instance
+      if (value == true) {
+        QuerySnapshot snapshot =
+            await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                .getUserData(email);
+        //sharedrefences
+        await HelperFunctions.savedUserLoggedInStatus(true);
+        await HelperFunctions.savedUserEmailSF(email);
+      }
+    });
   }
 }
 
