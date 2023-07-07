@@ -557,7 +557,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
+<<<<<<< HEAD
+  tuple:
+=======
   timezone:
+>>>>>>> 719babf69686a9e1e6c55c70708ef4cb6a97c1ca
     dependency: transitive
     description:
       name: timezone
@@ -622,5 +626,10 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
+<<<<<<< HEAD
+  dart: ">=3.0.0-0 <4.0.0"
+  flutter: ">=3.3.0"
+=======
   dart: ">=3.0.0 <4.0.0"
   flutter: ">=3.10.0"
+>>>>>>> 719babf69686a9e1e6c55c70708ef4cb6a97c1ca

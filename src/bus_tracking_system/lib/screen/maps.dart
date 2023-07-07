@@ -238,106 +238,28 @@ class _BusTrackingState extends State<BusTracking> {
   Widget build(BuildContext context) {
     final bool isDistanceTimeVisible = distance.isNotEmpty && time.isNotEmpty;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Select Route',
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(Icons.menu),
-              color: Colors.black,
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('Select Route'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LocationsPage(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Logout'),
-              onTap: _showLogoutConfirmationDialog,
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: FlutterMap(
-              options: MapOptions(
-                center: destinationLocation,
-                zoom: 15.0,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      width: 30.0,
-                      height: 30.0,
-                      point: sourceLocation,
-                      builder: (ctx) => Container(
-                        child: Image.asset(
-                          'assets/images/person.png', //Custom Person icon
-                          width: 5.0,
-                          height: 5.0,
-                        ),
-                      ),
+      body: Center(
+        child: Container(
+          child: Column(
+            children: [
+              Flexible(
+                child: FlutterMap(
+                  options: MapOptions(
+                      center: LatLng(30.4159, 77.9668),
+                      zoom: 13),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      userAgentPackageName: 'dev.fleaflet.flutter_map.example',
                     ),
-                    Marker(
-                      width: 35.0,
-                      height: 35.0,
-                      point: destinationLocation,
-                      builder: (ctx) => Container(
-                        child: Image.asset(
-                          'assets/images/busicon.png', //Custom Bus icon
-                          width: 5.0,
-                          height: 5.0,
+                    MarkerLayer(
+                      markers: [
+                        Marker(
+                          point: LatLng(30.4159, 77.9668),
+                          width: 80,
+                          height: 80,
+                          builder: (context) => Icon(Icons.pin_drop),
                         ),
                       ),
                     ),
