@@ -1,69 +1,31 @@
 terraform {
   required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = "~> 4.0"
+    firebase = {
+      source  = "terraform-google-modules/firebase/google"
+      version = "3.6.0"
     }
   }
 }
 
-# Configures the provider to not use the resource block's specified project for quota checks.
-# This provider should only be used during project creation and initializing services.
-provider "google-beta" {
-  alias = "no_user_project_override"
-  user_project_override = false
+provider "google" {
+  credentials = file("/src/bus_tracking_system/service-acc-key.txt")
 }
 
-
-resource "google_project" "default" {
-  provider   = google-beta.no_user_project_override
-
-  name       = "Project Display Name"
-  project_id = "alonit-some-id-123"
-
-  labels = {
-    "firebase" = "enabled"
-  }
+resource "google_project_service" "firebase" {
+  project = var.project_id
+  service = "firebase.googleapis.com"
 }
 
-
-# Enables required APIs.
-resource "google_project_service" "default" {
-  provider = google-beta.no_user_project_override
-  project  = google_project.default.project_id
-  for_each = toset([
-    "cloudbilling.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "firebase.googleapis.com",
-    "serviceusage.googleapis.com",
-  ])
-  service = each.key
-
-  # Don't disable the service if the resource block is removed by accident.
-  disable_on_destroy = false
+resource "firebase_project" "BusTrackingSystem" {
+  project = var.project_id
 }
 
-# Enables Firebase services for the new project created above.
-resource "google_firebase_project" "default" {
-  provider = google-beta
-  project  = google_project.default.project_id
-
-  # Waits for the required APIs to be enabled.
-  depends_on = [
-    google_project_service.default
-  ]
+resource "firebase_database_instance" "my_database" {
+  project      = var.project_id
+  database     = "BusTrackingSystem"
+  depends_on   = [google_project_service.firebase]
 }
 
-# Creates a Firebase Android App in the new project created above.
-resource "google_firebase_android_app" "default" {
-  provider = google-beta
-
-  project      = google_project.default.project_id
-  display_name = "My Awesome Android app"
-  package_name = "awesome.package.name"
-
-  # Wait for Firebase to be enabled in the Google Cloud project before creating this App.
-  depends_on = [
-    google_firebase_project.default,
-  ]
+output "database_url" {
+  value = firebase_database_instance.my_database.database_url
 }
