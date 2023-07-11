@@ -11,7 +11,7 @@ pipeline {
     stage('Build and Test') {
       steps {
         // Set up Flutter environment (adjust paths as needed)
-        sh 'export PATH=$PATH:/path/to/flutter/bin'
+        sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
         sh 'flutter doctor'
 
         // Build Flutter project
