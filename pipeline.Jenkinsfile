@@ -17,6 +17,7 @@ pipeline {
         // Build Flutter project
         sh 'git clone "https://github.com/upes-open/Bus-Tracking-system.git"'
         sh 'cd Bus-Tracking-system/src/bus_tracking_system'
+        sh 'flutter pub get'
         sh 'flutter build apk'
 
         // Run tests
