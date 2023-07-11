@@ -18,6 +18,7 @@ pipeline {
         sh 'rm -rf Bus-Tracking-system'
         sh 'git clone "https://github.com/upes-open/Bus-Tracking-system.git"'
         sh 'cd Bus-Tracking-system/src/bus_tracking_system'
+        sh 'pwd'
         sh 'flutter pub get'
         sh 'flutter build apk'
 
