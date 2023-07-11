@@ -15,6 +15,9 @@ pipeline {
         sh 'flutter doctor'
 
         // Build Flutter project
+        sh 'cd Bus-Tracking-system'
+        sh 'git pull'
+        sh 'cd src/bus_tracking_system'
         sh 'flutter build apk'
 
         // Run tests
