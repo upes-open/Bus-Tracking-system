@@ -196,8 +196,8 @@ class _BusTrackingState extends State<BusTracking> {
 
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(response.body);
-      final coordinates =
-          jsonResponse['features'][0]['geometry']['coordinates'];
+      final coordinates = List<dynamic>.from(
+          jsonResponse['features'][0]['geometry']['coordinates']);
       return coordinates
           .map<LatLng>((coord) => LatLng(coord[1], coord[0]))
           .toList();
@@ -245,8 +245,9 @@ class _BusTrackingState extends State<BusTracking> {
               Flexible(
                 child: FlutterMap(
                   options: MapOptions(
-                      center: LatLng(30.4159, 77.9668),
-                      zoom: 13),
+                    center: LatLng(30.4159, 77.9668),
+                    zoom: 13,
+                  ),
                   children: [
                     TileLayer(
                       urlTemplate:
@@ -261,11 +262,13 @@ class _BusTrackingState extends State<BusTracking> {
                           height: 80,
                           builder: (context) => Icon(Icons.pin_drop),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-                PolylineLayer(
+              ),
+              Flexible(
+                child: PolylineLayer(
                   polylines: [
                     Polyline(
                       points: polylinePoints,
@@ -274,41 +277,33 @@ class _BusTrackingState extends State<BusTracking> {
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  'Distance: $distance',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  'Time: $time',
-                  style: TextStyle(fontSize: 16),
-                ),
-                if (!isDistanceTimeVisible)
-                  ElevatedButton(
-                    onPressed: isLoading ? null : calculateDistanceAndTime,
-                    child: Text('Show Distance & Time'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.disabled)) {
-                            return Colors.grey;
-                          }
-                          return Colors
-                              .blue; //when ORS api data fetching is successful and it is ready to show required data(distance and time)
-                        },
-                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Distance: $distance',
+                      style: TextStyle(fontSize: 16),
                     ),
-                  ),
-              ],
-            ),
+                    Text(
+                      'Time: $time',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    if (!isDistanceTimeVisible)
+                      ElevatedButton(
+                        onPressed: isLoading ? null : calculateDistanceAndTime,
+                        child: Text('Show Distance & Time'),
+                        style: ElevatedButton.styleFrom(
+                          primary: isLoading ? Colors.grey : Colors.blue,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
