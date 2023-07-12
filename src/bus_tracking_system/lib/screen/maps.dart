@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:app_settings/app_settings.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -10,8 +12,6 @@ import '../Constants/constants.dart';
 import 'package:bus_tracking_system/screen/profile.dart';
 import 'package:bus_tracking_system/screen/locations_page.dart';
 
-import 'package:latlong2/latlong.dart';
-
 class BusTracking extends StatefulWidget {
   @override
   _BusTrackingState createState() => _BusTrackingState();
@@ -19,24 +19,29 @@ class BusTracking extends StatefulWidget {
 
 class _BusTrackingState extends State<BusTracking> {
   String apiKey = orsapikey; //OpenRouteService API key
-  String distance = '';
-  String time = '';
+  late String distance = '';
+  late String time = '';
   bool isLoading = false; //A flag to check the status of the api data loading
-  LatLng sourceLocation = LatLng(0, 0);
-  LatLng destinationLocation = LatLng(30.3253,
+  late LatLng sourceLocation = LatLng(0, 0); //For user location
+  late LatLng destinationLocation = LatLng(
+      30.3253, //For driver location
       78.0413); //Destination Location (retrieved from the firebase database; must be connected to firebase)
   List<LatLng> polylinePoints = [];
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  late DatabaseReference dbRef;
 
   @override
   void initState() {
     super.initState();
     initNotifications();
     requestPermission();
+
+    dbRef = FirebaseDatabase.instance.ref().child('Value');
   }
 
-  //Permission to access live-location
+//Permission to access live-location
   Future<void> requestPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
@@ -103,7 +108,7 @@ class _BusTrackingState extends State<BusTracking> {
       int minutes = (duration % 60).toInt();
       return '${hours}h ${minutes}m';
     } else {
-      return '${duration.round()}m';
+      return '${duration.round()}min';
     }
   }
 
@@ -112,9 +117,17 @@ class _BusTrackingState extends State<BusTracking> {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      requestAlertPermission: true,
+    );
+
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -129,8 +142,12 @@ class _BusTrackingState extends State<BusTracking> {
       priority: Priority.high,
     );
 
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
     );
 
     await flutterLocalNotificationsPlugin.show(
@@ -164,9 +181,9 @@ class _BusTrackingState extends State<BusTracking> {
           time = formatTime(duration);
         });
         //This will display an alert that the bus is near
-        if (double.parse(time) <= 2) {
-          showNotification();
-        }
+        // if (double.parse(time) <= 2) {
+        //   showNotification();
+        // }
       } else {
         throw Exception('Failed to load data');
       }
@@ -224,61 +241,184 @@ class _BusTrackingState extends State<BusTracking> {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     final bool isDistanceTimeVisible = distance.isNotEmpty && time.isNotEmpty;
     return Scaffold(
-      body: Center(
-        child: Stack(
-          children: [
-            FlutterMap(
-              options: MapOptions(
-                center: LatLng(30.4159, 77.9668),
-                zoom: 13,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Select Route',
+          style: TextStyle(color: Colors.black),
+        ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              color: Colors.black,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
               ),
-              layers: [
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Select Route'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationsPage(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Logout'),
+              onTap: _showLogoutConfirmationDialog,
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FlutterMap(
+              options: MapOptions(
+                center: destinationLocation,
+                zoom: 15.0,
+              ),
+              children: [
                 TileLayer(
-                  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                  additionalOptions: {
-                    'userAgent': 'dev.fleaflet.flutter_map.example',
-                  },
+                  urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
                 ),
                 MarkerLayer(
                   markers: [
                     Marker(
-                      point: LatLng(30.4159, 77.9668),
-                      width: 80,
-                      height: 80,
-                      builder: (context) => Icon(Icons.pin_drop),
+                      width: 30.0,
+                      height: 30.0,
+                      point: sourceLocation,
+                      builder: (ctx) => Container(
+                        child: Image.asset(
+                          'assets/images/person.png', //Custom Person icon
+                          width: 5.0,
+                          height: 5.0,
+                        ),
+                      ),
+                    ),
+                    Marker(
+                      width: 35.0,
+                      height: 35.0,
+                      point: destinationLocation,
+                      builder: (ctx) => Container(
+                        child: Image.asset(
+                          'assets/images/busicon.png', //Custom Bus icon
+                          width: 5.0,
+                          height: 5.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: polylinePoints,
+                      strokeWidth: 4.0,
+                      color: Colors.blue,
                     ),
                   ],
                 ),
               ],
             ),
-            PolylineLayer(
-              polylines: [
-                Polyline(
-                  points: polylinePoints,
-                  strokeWidth: 4.0,
-                  color: Colors.blue,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  'Distance: $distance',
+                  style: TextStyle(fontSize: 16),
                 ),
+                Text(
+                  'Time: $time',
+                  style: TextStyle(fontSize: 16),
+                ),
+                // MaterialButton(
+                //   onPressed: () {
+                //     Set<String> values = {
+                //       'Distance: $distance',
+                //       'Time: $time',
+                //     };
+
+                //     dbRef.push().set(values);
+                //   },
+                // ),
+                if (!isDistanceTimeVisible)
+                  // calculateDistanceAndTime();isLoading ? null : calculateDistanceAndTime,
+                  ElevatedButton(
+                    onPressed: () {
+                      isLoading
+                          ? null
+                          : calculateDistanceAndTime().then((value) {
+                              Map<String, String> values = {
+                                'Distance': distance,
+                                'Time': time,
+                                'sourceLocation': sourceLocation.toString(),
+                                'destinationLocation':
+                                    destinationLocation.toString(),
+                              };
+                              dbRef.push().set(values);
+                            });
+                    },
+                    child: Text('Show Distance & Time'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.disabled)) {
+                            return Colors.grey;
+                          }
+                          return Colors
+                              .blue; //when ORS api data fetching is successful and it is ready to show required data(distance and time)
+                        },
+                      ),
+                    ),
+                  ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: !isDistanceTimeVisible
-          ? Positioned(
-              bottom: 16.0,
-              right: 16.0,
-              child: ElevatedButton(
-                onPressed: isLoading ? null : calculateDistanceAndTime,
-                child: Text('Show Distance & Time'),
-                style: ElevatedButton.styleFrom(
-                  primary: isLoading ? Colors.grey : Colors.blue,
-                ),
-              ),
-            )
-          : null,
     );
   }
 }
