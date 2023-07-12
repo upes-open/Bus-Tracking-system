@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>826614974960-0hcvtv2358v9ur5ujrd16l0t6u79k4fq.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.826614974960-0hcvtv2358v9ur5ujrd16l0t6u79k4fq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC44rYUPUyiiD9IzIAdbRIGzvnaPBvHVSc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>826614974960</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.busTrackingSystem</string>
+	<key>PROJECT_ID</key>
+	<string>bustrackingsystem-62417</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bustrackingsystem-62417.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:826614974960:ios:400bb9ef1e42ae875a7535</string>
+	<key>DATABASE_URL</key>
+	<string>https://bustrackingsystem-62417-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
