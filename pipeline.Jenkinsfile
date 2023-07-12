@@ -13,10 +13,11 @@ pipeline {
         // Set up Flutter environment (adjust paths as needed)
         sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
         sh 'flutter doctor'
-        sh 'pwd'
 
         // Build Flutter project
-        sh 'flutter build apk'
+         dir('Bus-Tracking-system/src/bus_tracking_system/') {
+          sh 'flutter build apk'
+        }
 
         // Run tests
         sh 'flutter test'
@@ -33,7 +34,7 @@ pipeline {
           groupId: 'com.example',
           version: '1.0.0',
           repository: 'Bus-Tracking-Application',
-          file: 'build/app/outputs/flutter-apk/app-release.apk',
+          file: 'Bus-Tracking-system/src/bus_tracking_system/build/app/outputs/flutter-apk/app-release.apk',
           credentialsId: 'nexus-credentials'
         )
       }
