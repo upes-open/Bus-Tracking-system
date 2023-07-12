@@ -10,6 +10,8 @@ import '../Constants/constants.dart';
 import 'package:bus_tracking_system/screen/profile.dart';
 import 'package:bus_tracking_system/screen/locations_page.dart';
 
+import 'package:latlong2/latlong.dart';
+
 class BusTracking extends StatefulWidget {
   @override
   _BusTrackingState createState() => _BusTrackingState();
@@ -34,7 +36,7 @@ class _BusTrackingState extends State<BusTracking> {
     requestPermission();
   }
 
-//Permission to access live-location
+  //Permission to access live-location
   Future<void> requestPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
@@ -110,17 +112,9 @@ class _BusTrackingState extends State<BusTracking> {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      requestSoundPermission: true,
-      requestBadgePermission: true,
-      requestAlertPermission: true,
-    );
-
     final InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
     );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
@@ -135,12 +129,8 @@ class _BusTrackingState extends State<BusTracking> {
       priority: Priority.high,
     );
 
-    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
-        DarwinNotificationDetails();
-
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
     );
 
     await flutterLocalNotificationsPlugin.show(
@@ -234,82 +224,61 @@ class _BusTrackingState extends State<BusTracking> {
     );
   }
 
-  @override
   Widget build(BuildContext context) {
     final bool isDistanceTimeVisible = distance.isNotEmpty && time.isNotEmpty;
     return Scaffold(
       body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Flexible(
-                child: FlutterMap(
-                  options: MapOptions(
-                      center: LatLng(30.4159, 77.9668),
-                      zoom: 13),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          point: LatLng(30.4159, 77.9668),
-                          width: 80,
-                          height: 80,
-                          builder: (context) => Icon(Icons.pin_drop),
-                        ),
-                      ),
-                    ),
-                  ],
+        child: Stack(
+          children: [
+            FlutterMap(
+              options: MapOptions(
+                center: LatLng(30.4159, 77.9668),
+                zoom: 13,
+              ),
+              layers: [
+                TileLayer(
+                  urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  additionalOptions: {
+                    'userAgent': 'dev.fleaflet.flutter_map.example',
+                  },
                 ),
-                PolylineLayer(
-                  polylines: [
-                    Polyline(
-                      points: polylinePoints,
-                      strokeWidth: 4.0,
-                      color: Colors.blue,
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: LatLng(30.4159, 77.9668),
+                      width: 80,
+                      height: 80,
+                      builder: (context) => Icon(Icons.pin_drop),
                     ),
                   ],
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Text(
-                  'Distance: $distance',
-                  style: TextStyle(fontSize: 16),
+            PolylineLayer(
+              polylines: [
+                Polyline(
+                  points: polylinePoints,
+                  strokeWidth: 4.0,
+                  color: Colors.blue,
                 ),
-                Text(
-                  'Time: $time',
-                  style: TextStyle(fontSize: 16),
-                ),
-                if (!isDistanceTimeVisible)
-                  ElevatedButton(
-                    onPressed: isLoading ? null : calculateDistanceAndTime,
-                    child: Text('Show Distance & Time'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          if (states.contains(MaterialState.disabled)) {
-                            return Colors.grey;
-                          }
-                          return Colors
-                              .blue; //when ORS api data fetching is successful and it is ready to show required data(distance and time)
-                        },
-                      ),
-                    ),
-                  ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      floatingActionButton: !isDistanceTimeVisible
+          ? Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: ElevatedButton(
+                onPressed: isLoading ? null : calculateDistanceAndTime,
+                child: Text('Show Distance & Time'),
+                style: ElevatedButton.styleFrom(
+                  primary: isLoading ? Colors.grey : Colors.blue,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

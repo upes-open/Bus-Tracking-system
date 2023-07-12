@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "826614974960",
+    "firebase_url": "https://bustrackingsystem-62417-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "bustrackingsystem-62417",
     "storage_bucket": "bustrackingsystem-62417.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "826614974960-reu5dcs437dgtmvfl0fle3148shk5qnm.apps.googleusercontent.com",
+          "client_id": "826614974960-ddq4ji2h7c6c32lr1somhq3l5bcdd28k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +28,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "826614974960-reu5dcs437dgtmvfl0fle3148shk5qnm.apps.googleusercontent.com",
+              "client_id": "826614974960-ddq4ji2h7c6c32lr1somhq3l5bcdd28k.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "826614974960-0hcvtv2358v9ur5ujrd16l0t6u79k4fq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.busTrackingSystem"
+              }
             }
           ]
         }
