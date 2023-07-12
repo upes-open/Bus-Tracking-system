@@ -13,6 +13,7 @@ pipeline {
         // Set up Flutter environment (adjust paths as needed)
         sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
         sh 'flutter doctor'
+        sh 'pwd'
 
         // Build Flutter project
         sh 'flutter build apk'
