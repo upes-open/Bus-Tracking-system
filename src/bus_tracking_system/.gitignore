@@ -30,8 +30,20 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-/build/
-
+/build/app_settings
+/build/cloud_firestore
+/build/firebase_analytics
+/build/firebase_auth
+/build/firebase_core
+/build/firebase_crashlytics
+/build/firebase_database
+/build/firebase_messaging
+/build/firebase_performance
+/build/flutter_local_notifications
+/build/geolocator_android
+/build/shared_preferences_android
+/build/test_cache
+/build/unit_test_assets
 # Symbolication related
 app.*.symbols
 
@@ -45,3 +57,14 @@ app.*.map.json
 
 #Service Account Key
 service-acc-key.txt
+
+/build/app/crashlytics
+/build/app/generated
+/build/app/intermediates
+/build/app/kotlin
+/build/app/kotlinToolingMetadata
+/build/app/tmp
+/build/app/outputs/apk
+/build/app/outputs/logs
+/build/app/outputs/mapping
+/build/app/outputs/sdk-dependencies

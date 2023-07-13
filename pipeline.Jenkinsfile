@@ -8,21 +8,21 @@ pipeline {
       }
     }
 
-    stage('Build and Test') {
-      steps {
-        // Set up Flutter environment (adjust paths as needed)
-        sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
-        sh 'flutter doctor'
+    // stage('Build and Test') {
+    //   steps {
+    //     // Set up Flutter environment (adjust paths as needed)
+    //     sh 'export PATH=$PATH:/home/ubuntu/snap/flutter/common/flutter/bin'
+    //     sh 'flutter doctor'
 
-        // Build Flutter project
-         dir('Bus-Tracking-system/src/bus_tracking_system/') {
-          sh 'flutter build apk'
-        }
+    //     // Build Flutter project
+    //      dir('Bus-Tracking-system/src/bus_tracking_system/') {
+    //       sh 'flutter build apk'
+    //     }
 
-        // Run tests
-        sh 'flutter test'
-      }
-    }
+    //     // Run tests
+    //     sh 'flutter test'
+    //   }
+    // }
 
     stage('Publish to Nexus') {
       steps {
@@ -40,27 +40,28 @@ pipeline {
       }
     }
 
-    stage('Deploy to Staging') {
-      steps {
-        // Deploy to staging environment
-        sh 'flutter deploy staging'
-      }
-    }
+    // stage('Deploy to Staging') {
+    //   steps {
+    //     // Deploy to staging environment
+    //     sh 'flutter deploy staging'
+    //   }
+    // }
 
-    stage('Deploy to Production') {
-      steps {
-        // Deploy to production environment
-        sh 'flutter deploy production'
-      }
-    }
+    // stage('Deploy to Production') {
+    //   steps {
+    //     // Deploy to production environment
+    //     sh 'flutter deploy production'
+    //   }
+    // }
 
-    stage('Post-Deployment Test') {
-      steps {
-        // Run post-deployment tests
-        sh 'flutter test_integration'
-      }
+    // stage('Post-Deployment Test') {
+    //   steps {
+    //     // Run post-deployment tests
+    //     sh 'flutter test_integration'
+    //   }
     }
   }
+  
 
   post {
     always {
@@ -91,4 +92,3 @@ pipeline {
 //   triggers {
 //     scm('*/5 * * * *') // Poll SCM every 5 minutes
 //   }
- }
