@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -11,11 +13,67 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../Constants/constants.dart';
 import 'package:bus_tracking_system/screen/profile.dart';
 import 'package:bus_tracking_system/screen/locations_page.dart';
+import 'package:bus_tracking_system/screen/DriverLoginPage.dart';
 
 class BusTracking extends StatefulWidget {
   @override
   _BusTrackingState createState() => _BusTrackingState();
 }
+
+// class Destination extends StatefulWidget {
+//   final double destinationLatitude;
+//   final double destinationLongitude;
+
+//   Destination({
+//     required this.destinationLatitude,
+//     required this.destinationLongitude,
+//   });
+//   // const Destination({Key? key}) : super(key: key);
+
+//   @override
+//   State<Destination> createState() => _RealTimeDestLocation();
+// }
+// Retirieving Destination Location
+
+// class _RealTimeDestLocation extends State<Destination> {
+//   final ref = FirebaseDatabase.instance.ref('DestinationLocation');
+
+//   double latitude = 0;
+//   double longitude = 0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     ref.onValue.listen((event) {
+//       final DataSnapshot snapshot = event.snapshot; // Access the DataSnapshot
+//       final destinationLocationData = snapshot.value as Map<dynamic, dynamic>?;
+
+//       print(
+//           "Destination Location Data: $destinationLocationData"); // Debugging line
+
+//       if (destinationLocationData != null) {
+//         setState(() {
+//           latitude = destinationLocationData['Latitude'] as double;
+//           longitude = destinationLocationData['Longitude'] as double;
+//         });
+
+//         if (latitude != null && longitude != null) {
+//           print("Latitude: $latitude, Longitude: $longitude");
+//           // Use latitude and longitude values here
+//         }
+//       }
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: Column(
+//       children: [Text(latitude.toString())
+//       , Text(longitude.toString())],
+//     )); // Empty widget, no UI elements
+//   }
+// }
 
 class _BusTrackingState extends State<BusTracking> {
   String apiKey = orsapikey; //OpenRouteService API key
@@ -23,23 +81,78 @@ class _BusTrackingState extends State<BusTracking> {
   late String time = '';
   bool isLoading = false; //A flag to check the status of the api data loading
   late LatLng sourceLocation = LatLng(0, 0); //For user location
-  late LatLng destinationLocation = LatLng(
-      30.3253, //For driver location
-      78.0413); //Destination Location (retrieved from the firebase database; must be connected to firebase)
+  // late LatLng destinationLocation = LatLng(30.3253,
+  //     78.0413); //Destination Location (retrieved from the firebase database; must be connected to firebase)
+  late LatLng destinationLocation = LatLng(0, 0);
+  // double destinationLatitude = 0; // Initialize with default value
+  // double destinationLongitude = 0; // Initialize with default value
   List<LatLng> polylinePoints = [];
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   late DatabaseReference dbRef;
+  // Query dbRef2 = FirebaseDatabase.instance.ref().child('DestinationLocation');
 
   @override
   void initState() {
     super.initState();
-    initNotifications();
-    requestPermission();
+    // dbRef2.once().then((snapshot){
+    //   if (snapshot.value != null) {
+    //     final destinationLocationData = snapshot.value as Map<dynamic, dynamic>?;
+    //     if (destinationLocationData != null) {
+    //       final latitude = destinationLocationData['Latitude'] as double?;
+    //       final longitude = destinationLocationData['Longitude'] as double?;
+    //       if (latitude != null && longitude != null) {
+    //         setState(() {
+    //           destinationLatitude = latitude;
+    //           destinationLongitude = longitude;
+    //         });
+    //       }
+    //     }
+    //   }
+    // });
+    // Initialize Firebase Database reference
+    try{
+      final dbReference = FirebaseDatabase.instance.ref().child('DestinationLocation');
+      dbReference.once().then((DatabaseEvent databaseEvent) {
+        if (databaseEvent.snapshot.value != null) {
+          final destinationLocationData = databaseEvent.snapshot.value as Map<dynamic, dynamic>;
+          final latitude = destinationLocationData['latitude'] as double?;
+          final longitude = destinationLocationData['longitude'] as double?;
+          print(latitude);
+          print(longitude);
+
+          if (latitude != null && longitude != null) {
+            setState(() {
+              destinationLocation = LatLng(latitude, longitude);
+            });
+          }
+        }
+      });
+    }
+    catch (e) {
+      throw Exception("Error accessing Firebase Database");
+    }
 
     dbRef = FirebaseDatabase.instance.ref().child('Value');
+    initNotifications();
+    requestPermission();
   }
+  // dbRef.onValue.listen((event) {
+  //   if (event.snapshot.value != null) {
+  //     final locationString = event.snapshot.value as String;
+  //     final regex = RegExp(r'LatLng\(latitude:(.*), longitude:(.*)\)');
+  //     final match = regex.firstMatch(locationString);
+  //     if (match != null && match.groupCount == 2) {
+  //       final latitude = double.parse(match.group(1)!);
+  //       final longitude = double.parse(match.group(2)!);
+  //       print("Latitude: $latitude, Longitude: $longitude");
+  //       setState(() {
+  //         destinationLocation = LatLng(latitude, longitude);
+  //       });
+  //     }
+  //   }
+  // });
 
 //Permission to access live-location
   Future<void> requestPermission() async {
@@ -313,7 +426,7 @@ class _BusTrackingState extends State<BusTracking> {
           Expanded(
             child: FlutterMap(
               options: MapOptions(
-                center: destinationLocation,
+                center: LatLng(destinationLocation.latitude, destinationLocation.longitude),
                 zoom: 15.0,
               ),
               children: [
@@ -339,7 +452,7 @@ class _BusTrackingState extends State<BusTracking> {
                     Marker(
                       width: 35.0,
                       height: 35.0,
-                      point: destinationLocation,
+                      point: LatLng(destinationLocation.latitude, destinationLocation.longitude),
                       builder: (ctx) => Container(
                         child: Image.asset(
                           'assets/images/busicon.png', //Custom Bus icon
@@ -374,20 +487,19 @@ class _BusTrackingState extends State<BusTracking> {
                   'Time: $time',
                   style: TextStyle(fontSize: 16),
                 ),
-                // MaterialButton(
-                //   onPressed: () {
-                //     Set<String> values = {
-                //       'Distance: $distance',
-                //       'Time: $time',
-                //     };
-
-                //     dbRef.push().set(values);
-                //   },
-                // ),
+                Text(
+                  'Latitude: ${destinationLocation.latitude}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Longitude: ${destinationLocation.longitude}',
+                  style: TextStyle(fontSize: 16),
+                ),
                 if (!isDistanceTimeVisible)
                   // calculateDistanceAndTime();isLoading ? null : calculateDistanceAndTime,
                   ElevatedButton(
                     onPressed: () {
+                      
                       isLoading
                           ? null
                           : calculateDistanceAndTime().then((value) {
