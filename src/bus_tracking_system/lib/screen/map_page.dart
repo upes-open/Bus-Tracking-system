@@ -1,6 +1,6 @@
 import 'package:bus_tracking_system/screen/maps.dart';
 import 'package:flutter/material.dart';
-import 'package:bus_tracking_system/screen/select_routes.dart';
+// import 'package:bus_tracking_system/screen/select_routes.dart';
 
 class MapPage extends StatelessWidget {
   final String location;

@@ -40,7 +40,6 @@ class AuthService {
       return e.message;
     }
   }
-}
 
   //sign out
   /*Future signOut() async {
@@ -53,4 +52,4 @@ class AuthService {
       return null;
     }
   }*/
-
+}
